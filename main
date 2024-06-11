@@ -1,0 +1,180 @@
+#include "FileName.h"
+
+int main()
+{
+	/*创建航班数组*/
+	ifstream input;
+	input.open("D://filght.tet");
+	if (input.is_open())
+	{
+		airline temp;
+		while (input >> temp)
+		{
+			air.push_back(temp);
+		}
+		input.close();
+	}
+	else//打开文件失败，跳出
+	{
+		cout << "打开文件失败！" << endl;
+		return 0;
+	}
+	/*身份选择*/
+	while (1)
+	{
+		system("cls");
+		printQ();
+		cout << "请选择您的身份：";
+		char ch; cin >> ch;
+		while (ch != '1' && ch != '2' && ch != '0')
+		{
+			cout << "对不起，无此选项，请您重新选择：";
+			cin >> ch;
+		}
+		if (ch == '0')
+		{
+			cout << "退出成功！" << endl;
+			break;
+		}
+		else if (ch == '1')//用户页面
+		{
+			//登录和注册操作
+			while (1)
+			{
+				system("cls");
+				printD(1);
+				cout << "请输入您的选择：";
+				char chose;
+				cin >> chose;
+				//登录操作
+				if (chose == '0')
+				{
+					break;
+				}
+				else if (chose == '1')
+				{
+					int tag = 0;
+					if (login("D://user.tet"))
+					{
+						cout << "登录成功！" << endl;
+						system("pause");
+						/*用户页面 执行查询、订票、退票功能*/
+						while (1)
+						{
+							system("cls");
+							print_use(1);
+							cout << "请输入您的选择：";
+							cin >> chose;
+							switch (chose)
+							{
+							case '1'://查询航班
+								Query();
+								break;
+							case '2'://订票
+								order();
+								break;
+							case '3'://退票
+								return_tkt();
+								break;
+							case '0'://返回上一级
+								tag = 1;
+								break;
+							default:
+								cout << "对不起，无此选项！" << endl;
+								system("pause");
+								break;
+							}//switch
+							if (tag == 1)
+								break;
+						}//while
+					}
+					else
+					{
+						cout << "对不起，您输入的账号或密码不正确！" << endl;
+						system("pause");
+					}
+				}
+				//注册操作
+				else if (chose == '2')
+				{
+					if (enroll())
+					{
+						cout << "注册成功！" << endl;
+					}
+					else
+					{
+						cout << "注册失败！" << endl;
+					}
+					system("pause");
+				}
+				//非法输入
+				else
+				{
+					cout << "选择有误！" << endl;
+					system("pause");
+				}
+			}//while
+		}//if
+		else/*管理员身份*/
+		{
+			while (1)
+			{
+				system("cls");
+				printD(2);
+				cout << "请输入您的选择：";
+				char chose; cin >> chose;
+				if (chose == '0')
+				{
+					break;
+				}
+				else if (chose == '1')
+				{
+					if (login("D://manager.tet"))
+					{
+						int tag = 0;
+						while (1)
+						{
+							system("cls");
+							print_use(2);
+							cout << "请输入您的选择：";
+							cin >> chose;
+							switch (chose)
+							{
+							case '1'://打印所有航班信息
+								print_all();
+								break;
+							case '2'://查看乘客信息
+								view_passenger();
+								break;
+							case '3'://添加航班
+								add_air();
+								break;
+							case '0'://退出
+								tag = 1;
+								break;
+							default:
+								cout << "对不起，无此选项！" << endl;
+								system("pause");
+								break;
+							}//switch
+							if (tag == 1)
+								break;
+							system("pause");
+						}//while
+					}
+					else {
+						cout << "对不起，您的账号或密码有误!" << endl;
+						system("pause");
+					}
+				}
+				else {
+					cout << "对不起，无此选项！";
+					system("pause");
+				}
+			}//while
+		}
+	}
+	endd:
+	cout << "感谢您使用本订票系统，祝您生活愉快！" << endl;
+	return 0;
+}
